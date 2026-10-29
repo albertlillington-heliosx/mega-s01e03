@@ -44,7 +44,7 @@
   </tbody>
 </table>
 
-<p class="muted">Intake tagged {mistagged} of these {unique} reports with the wrong problem: the tag comes from the reporter's browser, the problem from the tenant.</p>
+<p class="muted">Intake's tag is wrong for {mistagged} of these {unique} reports: it is guessed from the reporter's browser, not the tenant, and it has no tag for a one-day move.</p>
 
 <style>
   .sum { font-size: 1.1rem; }

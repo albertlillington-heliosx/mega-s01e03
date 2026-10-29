@@ -1,0 +1,56 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: Albert Lillington
+status: open
+reviewed: 2026-10-29
+signature: Albert Lillington
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+[#4471](/kb/incidents/4471) says one bug, one fix queued. Its reports say three. The queued parser
+fix leaves two of them open.
+
+<Callout kind="warn">
+Not one issue. Each problem below has its own ticket now. Shipping the parser fix does not close #4471.
+</Callout>
+
+## What #4471 holds
+
+<ProblemTable
+  ticket={4471}
+  tickets={{
+    parser: 'https://github.com/albertlillington-heliosx/mega-s01e03/issues/1',
+    hint: 'https://github.com/albertlillington-heliosx/mega-s01e03/issues/2',
+    'one-day': 'https://github.com/albertlillington-heliosx/mega-s01e03/issues/3',
+  }}
+/>
+
+## The three problems
+
+- **`parser`**: the shared parser reads every date month first. Our tenants write the day first,
+  so the day and month swap. This is the fix that is queued.
+- **`hint`**: the booking-v3 form prints `MM/DD/YYYY` under its date field and then reads the date
+  day first. People type what the hint says. The parser fix does not reach these.
+- **`one-day`**: the date moves by one day, not by a month. Lisbon gets Tuesday, Toronto gets Monday.
+  The desk already listed these in `desk-notes.json`; the cause table still files them under `parser`.
+
+## How they were counted
+
+- One id, one report: the export repeats some reports across its pages.
+- A report's problem comes from its tenant (locale and booking form, `causes.ts`), not from the
+  intake tag. Intake guesses from the reporter's browser, and an en-US browser in Lisbon is still Lisbon.
+- The desk's one-day moves are taken out first, because no date in them is swapped.
+
+## Lessons
+
+- A matching subject line is not a matching cause ([decision 0001](/kb/decisions/0001-dedupe-by-subject)).
+  "Wrong day on the invite" covers all three problems.
+- Read a sample of the bodies before marking a big ticket known.
+
+<RenderStamp {signature} />
