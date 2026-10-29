@@ -38,14 +38,16 @@ Not one issue. Each problem below has its own ticket now. Shipping the parser fi
 - **`hint`**: the booking-v3 form prints `MM/DD/YYYY` under its date field and then reads the date
   day first. People type what the hint says. The parser fix does not reach these.
 - **`one-day`**: the date moves by one day, not by a month. Lisbon gets Tuesday, Toronto gets Monday.
-  The desk already listed these in `desk-notes.json`; the cause table still files them under `parser`.
+  The desk already listed these in `desk-notes.json`. They have their own ticket now, and they stay
+  counted under `parser`, where their tenant files them.
 
 ## How they were counted
 
 - One id, one report: the export repeats some reports across its pages.
 - A report's problem comes from its tenant (locale and booking form, `causes.ts`), not from the
   intake tag. Intake guesses from the reporter's browser, and an en-US browser in Lisbon is still Lisbon.
-- The desk's one-day moves are taken out first, because no date in them is swapped.
+- A report the desk read differently is counted where it's filed and again under what it reads as:
+  the 5 one-day moves are in both `parser` and `one-day`.
 
 ## Lessons
 

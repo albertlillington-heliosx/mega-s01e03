@@ -2,16 +2,17 @@
   import reports from '#lib/data/reports-4471.json';
   import notes from '#lib/data/desk-notes.json';
   import { groupByProblem, type Problem } from '#lib/kb/problems';
-  import { type Report } from '#lib/kb/causes';
+  import { uniqueById, type Report } from '#lib/kb/causes';
   import { tenantOf } from '#lib/kb/locales';
 
   // `tickets`: where each problem is tracked now, problem → link.
   let { ticket, tickets = {} }: { ticket: number; tickets?: Partial<Record<Problem, string>> } = $props();
 
   const rows = $derived((reports as Report[]).filter((r) => r.mergedInto === ticket));
+  const unique = $derived(uniqueById(rows).length);
   const groups = $derived(groupByProblem(reports as Report[], ticket, tenantOf, notes.oneDayMove));
-  const unique = $derived(groups.reduce((n, g) => n + g.reports.length, 0));
-  const mistagged = $derived(groups.reduce((n, g) => n + g.mistagged, 0));
+  const causes = $derived(groups.filter((g) => g.problem !== 'one-day'));
+  const mistagged = $derived(causes.reduce((n, g) => n + g.mistagged, 0));
   const channels = (c: Record<string, number>) =>
     Object.entries(c)
       .sort((a, b) => b[1] - a[1])
@@ -44,7 +45,13 @@
   </tbody>
 </table>
 
-<p class="muted">Intake's tag is wrong for {mistagged} of these {unique} reports: it is guessed from the reporter's browser, not the tenant, and it has no tag for a one-day move.</p>
+{#each causes as g (g.problem)}
+  {#if g.alsoOneDay}
+    <p class="muted">{g.alsoOneDay} of the <code>{g.problem}</code> reports read as a one-day move: counted under <code>{g.problem}</code> by tenant, and again under <code>one-day</code>.</p>
+  {/if}
+{/each}
+
+<p class="muted">Intake's tag names the wrong cause for {mistagged} of these {unique} reports: it is guessed from the reporter's browser, not the tenant.</p>
 
 <style>
   .sum { font-size: 1.1rem; }
