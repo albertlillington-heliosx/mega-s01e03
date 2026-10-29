@@ -31,7 +31,7 @@ reports have no swapped month at all. Its last column predates the tickets below
 
 | problem | its reports | ticket |
 | --- | --- | --- |
-| `parser`: the shared parser reads every date month first; our tenants write the day first, so day and month swap. This is the fix that is queued. | the `parser` row | [issue #1](https://github.com/albertlillington-heliosx/mega-s01e03/issues/1) |
+| `parser`: the shared parser reads every date month first; our tenants write the day first, so day and month swap. This is the fix that is queued. | the `parser` row, less the one-day moves noted under it | [issue #1](https://github.com/albertlillington-heliosx/mega-s01e03/issues/1) |
 | `hint`: the booking-v3 form prints `MM/DD/YYYY` under its date field, then reads the date day first. People type what the hint says. The parser fix does not reach these. | the `hint` row | [issue #2](https://github.com/albertlillington-heliosx/mega-s01e03/issues/2) |
 | `one-day`: the date moves by one day, not by a month. Lisbon gets Tuesday, Toronto gets Monday. | the one-day moves noted under the table (`desk-notes.json`) | [issue #3](https://github.com/albertlillington-heliosx/mega-s01e03/issues/3) |
 
@@ -41,8 +41,8 @@ reports have no swapped month at all. Its last column predates the tickets below
 - A report's problem comes from its tenant (locale and booking form, `causes.ts`), not from the
   intake tag. Intake guesses from the reporter's browser, and an en-US browser in Lisbon is still Lisbon.
   Compare the "tagged as" column with the row it sits in.
-- A report the desk read as a one-day move is counted where its tenant files it, and again under
-  the one-day problem.
+- A report the desk read as a one-day move belongs to the one-day problem, not to the cause its
+  tenant files it under.
 
 ## Lessons
 
